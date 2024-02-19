@@ -12,8 +12,12 @@ const Display = () => {
   const MyDispatch = useDispatch();
 
   const myTaskAdd = () => {
-    MyDispatch(addTask(val));
-    setVal("");
+    if (val.trim() !== "") {
+      MyDispatch(addTask(val));
+      setVal("");
+    } else {
+      alert("Please enter a task before adding!");
+    }
   };
 
   const myTaskDelete = (myid) => {
