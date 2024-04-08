@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addTask, deleteTask, CompleteTask, unCompleteTask, editData, MyEditSave } from "./todoSlice";
 import "./index.css";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Display = () => {
   const [val, setVal] = useState("");
@@ -15,27 +17,32 @@ const Display = () => {
     if (val.trim() !== "") {
       MyDispatch(addTask(val));
       setVal("");
+      toast.success('Task added successfully!');
     } else {
-      alert("Please enter a task before adding!");
+      toast.error('Plase Enter a task');
     }
   };
 
   const myTaskDelete = (myid) => {
     MyDispatch(deleteTask(myid));
+    toast.success('Task Delete successfully!');
   };
 
   const myTaskComplete = (myid) => {
     MyDispatch(CompleteTask(myid));
+    toast.success('Task Completed successfully!');
   };
 
   const myTaskUncomplete = (myid) => {
     MyDispatch(unCompleteTask(myid));
+    toast.success('Task assignment unsuccessful.');
   };
 
   const myTaskEdit = (myid) => {
     MyDispatch(editData(myid));
     setEditBtnFlag(false);
     setTmpId(myid);
+
   };
 
   useEffect(() => {
@@ -46,6 +53,7 @@ const Display = () => {
     MyDispatch(MyEditSave({ id: tmpId, myData: val }));
     setEditBtnFlag(true);
     setVal("");
+    toast.success('Task Edited successfully ');
   };
 
   const ans = mydata.map((key, index) => (
@@ -55,16 +63,16 @@ const Display = () => {
         {key.status ? key.work : <span>{key.work}</span>}
       </td>
       <td>
-        <button onClick={() => myTaskDelete(key.id)}>Delete</button>
+        <button onClick={() => myTaskDelete(key.id)} className="delete-btn">Delete</button>
       </td>
       <td>
-        <button onClick={() => myTaskComplete(key.id)}>Complete</button>
+        <button onClick={() => myTaskComplete(key.id)} className="complete-btn">Complete</button>
       </td>
       <td>
-        <button onClick={() => myTaskUncomplete(key.id)}>UnComplete</button>
+        <button onClick={() => myTaskUncomplete(key.id)} className="uncomplete-btn">UnComplete</button>
       </td>
       <td>
-        <button onClick={() => myTaskEdit(key.id)}>Edit</button>
+        <button onClick={() => myTaskEdit(key.id)} className="edit-btn">Edit</button>
       </td>
     </tr>
   ));
@@ -84,9 +92,9 @@ const Display = () => {
         }}
       />
       {editBtnFlag ? (
-        <button className="add-btn" onClick={myTaskAdd}>Add Task</button>
+        <button onClick={myTaskAdd} className="add-btn">Add Task</button>
       ) : (
-        <button className="save-btn" onClick={editDataSave}>Save Edit</button>
+        <button onClick={editDataSave} className="save-btn">Save Edit</button>
       )}
       <hr />
       <table className="task-table">
